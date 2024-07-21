@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Знакомства в Telegram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <link rel="stylesheet" href="css/style.min.css">
+    <style>
+
+
+        .hide {
+            display: none;
+        }
+        .error {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ---------------start content------------ -->
+    <div class="content premium-wrapper">
+        <div class="container">
+            <div class="header-content">
+                <div class="form-title">
+                    Sei un <br> membro 
+                     <span class="vip">VIP
+                        <img src="img/crown.png" alt="">
+                    </span> <br>adesso!
+                </div>
+
+                <div class="form-sub-title">
+                    il sorteggio avverrà il 13/07/2024
+                </div>
+
+                <div class="form-sub-title">
+                    Grazie per esserti iscritto e per aver partecipato al nostro Giveaway! Per favore, inserisci il tuo telefono per essere informato sui risultati.
+                    Inserisci il tuo telefono:
+                </div>
+
+                <div class="phone-container">
+                    <input id="phone" type="tel" placeholder="(000) 000-00-00">
+                    <span id="error-msg" class="hide">Invalid number</span>
+                </div>
+            </div>
+            
+            <div class="next-button-wrapper">
+                <div class="button button--disabled">
+                    <a href="succ.html"><b>👉 Invia 👈</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ---------------end content------------ -->
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const emailInput = document.querySelector('.form-input');
+        const submitButton = document.querySelector('.button');
+
+        emailInput.addEventListener('input', () => {
+            const email = emailInput.value;
+            if (isValidEmail(email)) {
+                submitButton.classList.remove('button--disabled');
+            } else {
+                submitButton.classList.add('button--disabled');
+            }
+        });
+
+        function isValidEmail(email) {
+            // A simple regular routine for checking email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+    });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var input = document.querySelector("#phone");
+        var errorMsg = document.querySelector("#error-msg");
+
+        // Initialize the intl-tel-input plugin
+        var iti = window.intlTelInput(input, {
+            initialCountry: "in",
+            onlyCountries: ["in","ua"],
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        // Check if only one country is available and add class if so
+        if (iti.getSelectedCountryData() && iti.getSelectedCountryData().dialCode === "91") {
+            input.parentElement.classList.add("iti--single");
+        }
+
+        // Initialize Cleave.js for formatting
+        var cleave = new Cleave(input, {
+            delimiters: ['(', ') ', '-', '-'],
+            blocks: [0, 3, 3, 2, 2],
+            numericOnly: true
+        });
+
+        // Validate the number
+        input.addEventListener('blur', function () {
+            if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                    input.classList.remove("error");
+                    errorMsg.classList.add("hide");
+                } else {
+                    input.classList.add("error");
+                    errorMsg.classList.remove("hide");
+                }
+            }
+        });
+
+        // Reset the error on keydown
+        input.addEventListener('keydown', function () {
+            input.classList.remove("error");
+            errorMsg.classList.add("hide");
+        });
+    });
+    </script>
+
+</body>
+</html>

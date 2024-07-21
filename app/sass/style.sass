@@ -560,8 +560,17 @@ a:hover
   max-width: 80%
   font-family: "Inter", sans-serif
   margin-top: 15px
-.form-input
+.phone-container
+  display: flex 
+  flex-direction: column 
+  align-items: center
+  margin-top: 30px
+  font-size: 30px
+  position: relative
+.form-input,
+#phone
   width: 100% 
+  min-width: 100%
   height: 90px
   display: block 
   margin-top: 30px
@@ -587,6 +596,11 @@ a:hover
   pointer-events: none
   a 
     background: grey
+.iti__selected-flag
+  padding-left: 15px 
+  padding-right: 15px
+
+  
 @media only screen and (max-width: 590px)
   .h1 
     font-size: 7.6vw
@@ -612,15 +626,21 @@ a:hover
     font-size: 10.169vw
   .form-sub-title
     font-size: 4.237vw
-  .form-input
+  .form-input,
+  #phone
     height: 15.254vw
     font-size: 5.085vw
     padding: 0 3.39vw
+  .phone-container
+    font-size: 5.085vw
+  .iti__selected-flag 
+    padding-left: 10px
+    padding-right: 10px
   .form-input
     margin-top: 20px
   .vip img 
     width: 14vw
-  
+
 
 @media only screen and (max-width: 370px)
   h2
