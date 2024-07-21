@@ -46,7 +46,7 @@
 
                 <div class="phone-container">
                     <input id="phone" type="tel" placeholder="(000) 000-00-00">
-                    <span id="error-msg" class="hide">Invalid number</span>
+                    <span id="error-msg" class="hide">Invalid phone number</span>
                 </div>
             </div>
             
@@ -84,49 +84,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var input = document.querySelector("#phone");
-        var errorMsg = document.querySelector("#error-msg");
+   document.addEventListener("DOMContentLoaded", function () {
+    var phoneInput = document.querySelector("#phone");
+    var errorMsg = document.querySelector("#error-msg");
+    var submitButton = document.querySelector(".button");
 
-        // Initialize the intl-tel-input plugin
-        var iti = window.intlTelInput(input, {
-            initialCountry: "in",
-            onlyCountries: ["in","ua"],
-            separateDialCode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-        });
-
-        // Check if only one country is available and add class if so
-        if (iti.getSelectedCountryData() && iti.getSelectedCountryData().dialCode === "91") {
-            input.parentElement.classList.add("iti--single");
-        }
-
-        // Initialize Cleave.js for formatting
-        var cleave = new Cleave(input, {
-            delimiters: ['(', ') ', '-', '-'],
-            blocks: [0, 3, 3, 2, 2],
-            numericOnly: true
-        });
-
-        // Validate the number
-        input.addEventListener('blur', function () {
-            if (input.value.trim()) {
-                if (iti.isValidNumber()) {
-                    input.classList.remove("error");
-                    errorMsg.classList.add("hide");
-                } else {
-                    input.classList.add("error");
-                    errorMsg.classList.remove("hide");
-                }
-            }
-        });
-
-        // Reset the error on keydown
-        input.addEventListener('keydown', function () {
-            input.classList.remove("error");
-            errorMsg.classList.add("hide");
-        });
+    // Initialize the intl-tel-input plugin
+    var iti = window.intlTelInput(phoneInput, {
+        initialCountry: "in",
+        onlyCountries: ["in", "ua"],
+        separateDialCode: true,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
+
+    // Initialize Cleave.js for formatting
+    var cleave = new Cleave(phoneInput, {
+        delimiters: ['(', ') ', '-', '-'],
+        blocks: [0, 3, 3, 2, 2],
+        numericOnly: true
+    });
+
+    // Validate the number and toggle button class
+    function validatePhoneNumber() {
+        if (phoneInput.value.trim()) {
+            if (iti.isValidNumber()) {
+                phoneInput.classList.remove("error");
+                errorMsg.classList.add("hide");
+                submitButton.classList.remove('button--disabled'); // Enable button
+            } else {
+                phoneInput.classList.add("error");
+                errorMsg.classList.remove("hide");
+                submitButton.classList.add('button--disabled'); // Disable button
+            }
+        } else {
+            phoneInput.classList.remove("error");
+            errorMsg.classList.add("hide");
+            submitButton.classList.add('button--disabled'); // Disable button if empty
+        }
+    }
+
+    // Validate the number on blur
+    phoneInput.addEventListener('blur', validatePhoneNumber);
+
+    // Reset the error on keydown
+    phoneInput.addEventListener('keydown', function () {
+        phoneInput.classList.remove("error");
+        errorMsg.classList.add("hide");
+    });
+});
+
     </script>
 
 </body>
