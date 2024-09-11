@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Знакомства в Telegram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <link rel="stylesheet" href="css/style.min.css">
+</head>
+<body>
+
+    <!-- ---------------start content------------ -->
+    <div class="content premium-wrapper">
+        <div class="container">
+            <div class="header-content">              
+
+                <div class="phone-container">
+                    <input id="phone" type="tel" placeholder="(000) 000-00-00">
+                    <span id="error-msg" class="hide">Invalid phone number</span>
+                </div>
+
+
+                <div class="user-info-wrapper">
+                    <div class="input-wrapper"> 
+                    <label class="label" for="">Account</label>
+                    <input class="input" type="text" placeholder="yourname@bank.com">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label class="label" for="">First Name</label>
+                    <input class="input" type="text" placeholder="John">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label class="label" for="">Last Name</label>
+                    <input class="input" type="text" placeholder="Doe">
+                </div>
+              
+
+                <div class="input-wrapper">
+                    <label for="state" class="label">State</label>
+                    <input class="input input-autocomplite" type="text" id="state" placeholder="Start typing your state..." oninput="filterStates()" onclick="showAllStates()" autocomplete="0">
+                    <select id="state-select" size="5" style="display:none;" onclick="selectState(event)">
+                        <!-- Options will be dynamically added here -->
+                    </select>
+                </div>
+                
+                <div class="input-wrapper">
+                    <label class="label" for="">Zip</label>
+                    <input class="input" type="text" placeholder="12345">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label class="label" for="">Address</label>
+                    <input class="input" type="text" placeholder="123 Main St, Apt 4B">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label class="label" for="">Email</label>
+                    <input class="input" type="text" placeholder="name@example.com">
+                </div>
+                </div>
+                
+
+                
+                
+                 
+
+            </div>
+            
+            <div class="next-button-wrapper">
+                <div class="button button--disabled">
+                    <a href="succ.html"><b>👉 Invia 👈</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ---------------end content------------ -->
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const emailInput = document.querySelector('.form-input');
+        const submitButton = document.querySelector('.button');
+
+        emailInput.addEventListener('input', () => {
+            const email = emailInput.value;
+            if (isValidEmail(email)) {
+                submitButton.classList.remove('button--disabled');
+            } else {
+                submitButton.classList.add('button--disabled');
+            }
+        });
+
+        function isValidEmail(email) {
+            // A simple regular routine for checking email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+    });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+    <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    var phoneInput = document.querySelector("#phone");
+    var errorMsg = document.querySelector("#error-msg");
+    var submitButton = document.querySelector(".button");
+
+    // Initialize the intl-tel-input plugin
+    var iti = window.intlTelInput(phoneInput, {
+        initialCountry: "in",
+        onlyCountries: ["in", "ua"],
+        separateDialCode: true,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+    });
+
+    // Initialize Cleave.js for formatting
+    var cleave = new Cleave(phoneInput, {
+        delimiters: ['(', ') ', '-', '-'],
+        blocks: [0, 3, 3, 2, 2],
+        numericOnly: true
+    });
+
+    // Validate the number and toggle button class
+    function validatePhoneNumber() {
+        if (phoneInput.value.trim()) {
+            if (iti.isValidNumber()) {
+                phoneInput.classList.remove("error");
+                errorMsg.classList.add("hide");
+                submitButton.classList.remove('button--disabled'); // Enable button
+            } else {
+                phoneInput.classList.add("error");
+                errorMsg.classList.remove("hide");
+                submitButton.classList.add('button--disabled'); // Disable button
+            }
+        } else {
+            phoneInput.classList.remove("error");
+            errorMsg.classList.add("hide");
+            submitButton.classList.add('button--disabled'); // Disable button if empty
+        }
+    }
+
+    // Validate the number on blur
+    phoneInput.addEventListener('blur', validatePhoneNumber);
+
+    // Reset the error on keydown
+    phoneInput.addEventListener('keydown', function () {
+        phoneInput.classList.remove("error");
+        errorMsg.classList.add("hide");
+    });
+});
+
+    </script>
+
+    <script>
+  const states = [
+    "Andhra Pradesh", "Arunāchal Pradesh", "Assam", "Bihār", "Chandīgarh", 
+    "Chhattīsgarh", "Delhi", "Dādra and Nagar Haveli and Damān and Diu", 
+    "Goa", "Gujarāt", "Haryāna", "Himāchal Pradesh", "Jammu and Kashmīr", 
+    "Jhārkhand", "Karnātaka", "Kerala", "Ladākh", "Lakshadweep", 
+    "Madhya Pradesh", "Mahārāshtra", "Manipur", "Meghālaya", "Mizoram", 
+    "Nāgāland", "Odisha", "Puducherry", "Punjab", "Rājasthān", "Sikkim", 
+    "Tamil Nādu", "Telangāna", "Tripura", "Uttar Pradesh", "Uttarākhand", 
+    "West Bengal"
+];
+
+function filterStates() {
+    const input = document.getElementById('state').value.toLowerCase();
+    const select = document.getElementById('state-select');
+    
+    // Clear previous options
+    select.innerHTML = '';
+    
+    // Filter and add new options
+    states
+        .filter(state => state.toLowerCase().includes(input))
+        .forEach(filteredState => {
+            const option = document.createElement('option');
+            option.value = filteredState;
+            option.textContent = filteredState;
+            select.appendChild(option);
+        });
+    
+    // Show select if there are matching states
+    select.style.display = select.options.length > 0 ? 'block' : 'none';
+}
+
+function showAllStates() {
+    const select = document.getElementById('state-select');
+    
+    // Clear previous options
+    select.innerHTML = '';
+    
+    // Add all states as options
+    states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        select.appendChild(option);
+    });
+    
+    // Show select dropdown
+    select.style.display = 'block';
+}
+
+function selectState(event) {
+    const input = document.getElementById('state');
+    
+    // Set the selected value to the input field
+    input.value = event.target.value;
+    
+    // Hide the select dropdown
+    document.getElementById('state-select').style.display = 'none';
+}
+
+// Close the select dropdown when clicking outside of it
+document.addEventListener('click', function(event) {
+    const input = document.getElementById('state');
+    const select = document.getElementById('state-select');
+    
+    if (!input.contains(event.target) && !select.contains(event.target)) {
+        select.style.display = 'none';
+    }
+});
+
+    </script>
+
+</body>
+</html>
