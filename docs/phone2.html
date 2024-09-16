@@ -48,10 +48,8 @@
 
                 <div class="input-wrapper">
                     <label for="state" class="label">State</label>
-                    <input class="input input-autocomplite" type="text" id="state" placeholder="Start typing your state..." oninput="filterStates()" onclick="showAllStates()" autocomplete="0">
-                    <select id="state-select" size="5" style="display:none;" onclick="selectState(event)">
-                        <!-- Options will be dynamically added here -->
-                    </select>
+                    <input class="input input-autocomplite" type="text" id="state" placeholder="Start typing your state..." oninput="filterStates()" onfocus="showAllStates()" autocomplete="0">
+                    <ul id="state-select" style="display: none;"></ul>
                 </div>
                 
                 <div class="input-wrapper">
@@ -88,7 +86,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const emailInput = document.querySelector('.form-input');
+        const emailInput = document.querySelector('.input');
         const submitButton = document.querySelector('.button');
 
         emailInput.addEventListener('input', () => {
@@ -163,6 +161,7 @@
     </script>
 
     <script>
+
   const states = [
     "Andhra Pradesh", "Arunāchal Pradesh", "Assam", "Bihār", "Chandīgarh", 
     "Chhattīsgarh", "Delhi", "Dādra and Nagar Haveli and Damān and Diu", 
@@ -172,66 +171,65 @@
     "Nāgāland", "Odisha", "Puducherry", "Punjab", "Rājasthān", "Sikkim", 
     "Tamil Nādu", "Telangāna", "Tripura", "Uttar Pradesh", "Uttarākhand", 
     "West Bengal"
-];
+  ];
 
-function filterStates() {
+  function filterStates() {
     const input = document.getElementById('state').value.toLowerCase();
     const select = document.getElementById('state-select');
     
-    // Clear previous options
     select.innerHTML = '';
     
-    // Filter and add new options
     states
-        .filter(state => state.toLowerCase().includes(input))
-        .forEach(filteredState => {
-            const option = document.createElement('option');
-            option.value = filteredState;
-            option.textContent = filteredState;
-            select.appendChild(option);
-        });
+      .filter(state => state.toLowerCase().includes(input))
+      .forEach(filteredState => {
+        const li = document.createElement('li');
+        li.textContent = filteredState;
+        li.addEventListener('click', () => selectStateFromList(filteredState));
+        select.appendChild(li);
+      });
     
-    // Show select if there are matching states
-    select.style.display = select.options.length > 0 ? 'block' : 'none';
-}
+    select.style.display = select.childElementCount > 0 ? 'block' : 'none';
+  }
 
-function showAllStates() {
+  function showAllStates() {
     const select = document.getElementById('state-select');
-    
-    // Clear previous options
-    select.innerHTML = '';
-    
-    // Add all states as options
+    select.innerHTML = ''; 
+
     states.forEach(state => {
-        const option = document.createElement('option');
-        option.value = state;
-        option.textContent = state;
-        select.appendChild(option);
+      const li = document.createElement('li');
+      li.textContent = state;
+      li.addEventListener('click', () => selectStateFromList(state));
+      select.appendChild(li);
     });
-    
-    // Show select dropdown
-    select.style.display = 'block';
-}
 
-function selectState(event) {
+    select.style.display = 'block'; 
+  }
+
+  function selectStateFromList(state) {
     const input = document.getElementById('state');
-    
-    // Set the selected value to the input field
-    input.value = event.target.value;
-    
-    // Hide the select dropdown
+    input.value = state;
     document.getElementById('state-select').style.display = 'none';
-}
+  }
 
-// Close the select dropdown when clicking outside of it
-document.addEventListener('click', function(event) {
+  document.addEventListener('click', function(event) {
     const input = document.getElementById('state');
     const select = document.getElementById('state-select');
     
     if (!input.contains(event.target) && !select.contains(event.target)) {
-        select.style.display = 'none';
+      select.style.display = 'none';
     }
-});
+  });
+
+  document.addEventListener('touchstart', function(event) {
+    const input = document.getElementById('state');
+    const select = document.getElementById('state-select');
+
+    if (!input.contains(event.target) && !select.contains(event.target)) {
+      select.style.display = 'none';
+    }
+  });
+
+
 
     </script>
 
