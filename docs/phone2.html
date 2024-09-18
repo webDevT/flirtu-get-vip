@@ -106,8 +106,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
     <script>
-  document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
     var phoneInput = document.querySelector("#phone");
+    var errorMsgPhone = document.querySelector("#error-msg-phone");
+    var submitButton = document.querySelector("#submit-button");
 
     var iti = window.intlTelInput(phoneInput, {
         initialCountry: "in",
@@ -122,33 +124,36 @@
         numericOnly: true
     });
 
-    phoneInput.addEventListener('change', function () {
-        iti.setNumber(phoneInput.value); // Обновляем номер при смене страны
-    });
-
     function validatePhoneNumber() {
-        if (phoneInput.value.trim()) {
+        var formattedNumber = cleave.getFormattedValue();
+        if (formattedNumber.trim()) {
             if (iti.isValidNumber()) {
                 phoneInput.classList.remove("error");
-                document.querySelector("#error-msg-phone").classList.add("hide");
+                errorMsgPhone.classList.add("hide");
+                submitButton.classList.remove('button--disabled');
             } else {
                 phoneInput.classList.add("error");
-                document.querySelector("#error-msg-phone").classList.remove("hide");
+                errorMsgPhone.classList.remove("hide");
+                submitButton.classList.add('button--disabled');
             }
         } else {
             phoneInput.classList.remove("error");
-            document.querySelector("#error-msg-phone").classList.add("hide");
+            errorMsgPhone.classList.add("hide");
+            submitButton.classList.add('button--disabled');
         }
     }
 
-    phoneInput.addEventListener('blur', validatePhoneNumber);
+    phoneInput.addEventListener('input', function () {
+        validatePhoneNumber();
+    });
 
+    phoneInput.addEventListener('blur', function () {
+        validatePhoneNumber();
+    });
 
-
- 
     phoneInput.addEventListener('keydown', function () {
         phoneInput.classList.remove("error");
-        errorMsg.classList.add("hide");
+        errorMsgPhone.classList.add("hide");
     });
 });
 
@@ -276,8 +281,11 @@ document.addEventListener('touchstart', function(event) {
 
 
 
-<script>
+
+
+   <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Selectors
         const phoneInput = document.querySelector('#phone');
         const emailInput = document.querySelector('#email');
         const accountInput = document.querySelector('#account');
@@ -287,7 +295,7 @@ document.addEventListener('touchstart', function(event) {
         const zipInput = document.querySelector('#zip');
         const addressInput = document.querySelector('#address');
         const submitButton = document.querySelector('#submit-button');
-        
+
         const errorMsgs = {
             phone: document.querySelector('#error-msg-phone'),
             account: document.querySelector('#error-msg-account'),
@@ -298,8 +306,21 @@ document.addEventListener('touchstart', function(event) {
             address: document.querySelector('#error-msg-address'),
             email: document.querySelector('#error-msg-email'),
         };
-    
-        const accountRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+$/;
+
+        // Initialize intl-tel-input
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "in",
+            onlyCountries: ["in"],
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        // Initialize Cleave
+        const cleave = new Cleave(phoneInput, {
+            delimiters: ['(', ') ', '-', '-'],
+            blocks: [0, 3, 3, 2, 2],
+            numericOnly: true
+        });
 
         function isValidEmail(email) {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -307,20 +328,37 @@ document.addEventListener('touchstart', function(event) {
         }
 
         function isValidAccount(account) {
+            const accountRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+$/;
             return accountRegex.test(account);
         }
-    
+
+        function validatePhoneNumber() {
+            const formattedNumber = cleave.getFormattedValue();
+            if (formattedNumber.trim()) {
+                if (iti.isValidNumber()) {
+                    phoneInput.classList.remove("error");
+                    errorMsgs.phone.classList.add("hide");
+                } else {
+                    phoneInput.classList.add("error");
+                    errorMsgs.phone.classList.remove("hide");
+                }
+            } else {
+                phoneInput.classList.remove("error");
+                errorMsgs.phone.classList.add("hide");
+            }
+        }
+
         function validateForm() {
             let isValid = true;
-    
+
             // Phone validation
-            if (!phoneInput.value.trim()) {
+            if (!phoneInput.value.trim() || !iti.isValidNumber()) {
                 errorMsgs.phone.classList.remove('hide');
                 isValid = false;
             } else {
                 errorMsgs.phone.classList.add('hide');
             }
-    
+
             // Account validation
             if (!accountInput.value.trim() || !isValidAccount(accountInput.value)) {
                 errorMsgs.account.classList.remove('hide');
@@ -329,7 +367,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.account.classList.add('hide');
             }
-    
+
             // First Name validation
             if (!firstNameInput.value.trim()) {
                 errorMsgs.firstName.classList.remove('hide');
@@ -337,7 +375,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.firstName.classList.add('hide');
             }
-    
+
             // Last Name validation
             if (!lastNameInput.value.trim()) {
                 errorMsgs.lastName.classList.remove('hide');
@@ -345,7 +383,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.lastName.classList.add('hide');
             }
-    
+
             // State validation
             if (!stateInput.value.trim()) {
                 errorMsgs.state.classList.remove('hide');
@@ -353,7 +391,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.state.classList.add('hide');
             }
-    
+
             // Zip validation
             if (!zipInput.value.trim()) {
                 errorMsgs.zip.classList.remove('hide');
@@ -361,7 +399,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.zip.classList.add('hide');
             }
-    
+
             // Address validation
             if (!addressInput.value.trim()) {
                 errorMsgs.address.classList.remove('hide');
@@ -369,7 +407,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.address.classList.add('hide');
             }
-    
+
             // Email validation
             if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
                 errorMsgs.email.classList.remove('hide');
@@ -378,7 +416,7 @@ document.addEventListener('touchstart', function(event) {
             } else {
                 errorMsgs.email.classList.add('hide');
             }
-    
+
             // Toggle submit button
             if (isValid) {
                 submitButton.classList.remove('button--disabled');
@@ -386,59 +424,44 @@ document.addEventListener('touchstart', function(event) {
                 submitButton.classList.add('button--disabled');
             }
         }
-    
-        // Validate on input changes
-        document.querySelectorAll('.input').forEach(input => {
-            input.addEventListener('input', validateForm);
-        });
-    });
-</script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var phoneInput = document.querySelector("#phone");
-        var errorMsgPhone = document.querySelector("#error-msg-phone");
-        var submitButton = document.querySelector("#submit-button");
-
-        var iti = window.intlTelInput(phoneInput, {
-            initialCountry: "in",
-            onlyCountries: ["in", "ua"],
-            separateDialCode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-        });
-
-        var cleave = new Cleave(phoneInput, {
-            delimiters: ['(', ') ', '-', '-'],
-            blocks: [0, 3, 3, 2, 2],
-            numericOnly: true
-        });
-
-        function validatePhoneNumber() {
-            if (phoneInput.value.trim()) {
-                if (iti.isValidNumber()) {
-                    phoneInput.classList.remove("error");
-                    errorMsgPhone.classList.add("hide");
-                    submitButton.classList.remove('button--disabled'); 
-                } else {
-                    phoneInput.classList.add("error");
-                    errorMsgPhone.classList.remove("hide");
-                    submitButton.classList.add('button--disabled'); 
-                }
-            } else {
-                phoneInput.classList.remove("error");
-                errorMsgPhone.classList.add("hide");
-                submitButton.classList.add('button--disabled'); 
-            }
+        // Function to remove hide class from all error messages
+        function removeAllErrorHides() {
+            Object.values(errorMsgs).forEach(error => {
+                error.classList.remove('hide');
+            });
         }
 
-        phoneInput.addEventListener('input', validatePhoneNumber);
-        phoneInput.addEventListener('blur', validatePhoneNumber);
+        // Validate on input changes
+        document.querySelectorAll('.input').forEach(input => {
+            input.addEventListener('input', () => {
+                removeAllErrorHides();
+                validateForm();
+            });
+        });
+
+        // Special handling for phone input
+        phoneInput.addEventListener('input', () => {
+            validatePhoneNumber();
+            validateForm(); // Ensure form validation is called
+        });
+
+        phoneInput.addEventListener('blur', () => {
+            validatePhoneNumber();
+            validateForm(); // Ensure form validation is called
+        });
+
         phoneInput.addEventListener('keydown', function () {
             phoneInput.classList.remove("error");
-            errorMsgPhone.classList.add("hide");
+            errorMsgs.phone.classList.add("hide");
         });
     });
+
+
 </script>
+
+
+
     
 
 </body>
