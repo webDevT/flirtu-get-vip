@@ -96,7 +96,7 @@
         });
 
         function isValidEmail(email) {
-            // A simple regular routine for checking email
+           
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailPattern.test(email);
         }
@@ -106,12 +106,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
     <script>
-   document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     var phoneInput = document.querySelector("#phone");
-    var errorMsg = document.querySelector("#error-msg");
-    var submitButton = document.querySelector(".button");
 
-    // Initialize the intl-tel-input plugin
     var iti = window.intlTelInput(phoneInput, {
         initialCountry: "in",
         onlyCountries: ["in", "ua"],
@@ -119,36 +116,36 @@
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
     });
 
-    // Initialize Cleave.js for formatting
     var cleave = new Cleave(phoneInput, {
         delimiters: ['(', ') ', '-', '-'],
         blocks: [0, 3, 3, 2, 2],
         numericOnly: true
     });
 
-    // Validate the number and toggle button class
+    phoneInput.addEventListener('change', function () {
+        iti.setNumber(phoneInput.value); // Обновляем номер при смене страны
+    });
+
     function validatePhoneNumber() {
         if (phoneInput.value.trim()) {
             if (iti.isValidNumber()) {
                 phoneInput.classList.remove("error");
-                errorMsg.classList.add("hide");
-                submitButton.classList.remove('button--disabled'); // Enable button
+                document.querySelector("#error-msg-phone").classList.add("hide");
             } else {
                 phoneInput.classList.add("error");
-                errorMsg.classList.remove("hide");
-                submitButton.classList.add('button--disabled'); // Disable button
+                document.querySelector("#error-msg-phone").classList.remove("hide");
             }
         } else {
             phoneInput.classList.remove("error");
-            errorMsg.classList.add("hide");
-            submitButton.classList.add('button--disabled'); // Disable button if empty
+            document.querySelector("#error-msg-phone").classList.add("hide");
         }
     }
 
-    // Validate the number on blur
     phoneInput.addEventListener('blur', validatePhoneNumber);
 
-    // Reset the error on keydown
+
+
+ 
     phoneInput.addEventListener('keydown', function () {
         phoneInput.classList.remove("error");
         errorMsg.classList.add("hide");
@@ -159,117 +156,122 @@
 
 <script>
     const states = {
-        "AN": "Andaman and Nicobar Islands",
-        "AP": "Andhra Pradesh",
-        "AR": "Arunāchal Pradesh",
-        "AS": "Assam",
-        "BR": "Bihār",
-        "CH": "Chandīgarh",
-        "CG": "Chhattīsgarh",
-        "DL": "Delhi",
-        "DH*": "Dādra and Nagar Haveli and Damān and Diu",
-        "GA": "Goa",
-        "GJ": "Gujarāt",
-        "HR": "Haryāna",
-        "HP": "Himāchal Pradesh",
-        "JK": "Jammu and Kashmīr",
-        "JH": "Jhārkhand",
-        "KA": "Karnātaka",
-        "KL": "Kerala",
-        "LA": "Ladākh",
-        "LD": "Lakshadweep",
-        "MP": "Madhya Pradesh",
-        "MH": "Mahārāshtra",
-        "MN": "Manipur",
-        "ML": "Meghālaya",
-        "MZ": "Mizoram",
-        "NL": "Nāgāland",
-        "OD": "Odisha",
-        "PY": "Puducherry",
-        "PB": "Punjab",
-        "RJ": "Rājasthān",
-        "SK": "Sikkim",
-        "TN": "Tamil Nādu",
-        "TS": "Telangāna",
-        "TR": "Tripura",
-        "UP": "Uttar Pradesh",
-        "UK": "Uttarākhand",
-        "WB": "West Bengal"
-    };
+    "AN": "Andaman and Nicobar Islands",
+    "AP": "Andhra Pradesh",
+    "AR": "Arunāchal Pradesh",
+    "AS": "Assam",
+    "BR": "Bihār",
+    "CH": "Chandīgarh",
+    "CG": "Chhattīsgarh",
+    "DL": "Delhi",
+    "DH*": "Dādra and Nagar Haveli and Damān and Diu",
+    "GA": "Goa",
+    "GJ": "Gujarāt",
+    "HR": "Haryāna",
+    "HP": "Himāchal Pradesh",
+    "JK": "Jammu and Kashmīr",
+    "JH": "Jhārkhand",
+    "KA": "Karnātaka",
+    "KL": "Kerala",
+    "LA": "Ladākh",
+    "LD": "Lakshadweep",
+    "MP": "Madhya Pradesh",
+    "MH": "Mahārāshtra",
+    "MN": "Manipur",
+    "ML": "Meghālaya",
+    "MZ": "Mizoram",
+    "NL": "Nāgāland",
+    "OD": "Odisha",
+    "PY": "Puducherry",
+    "PB": "Punjab",
+    "RJ": "Rājasthān",
+    "SK": "Sikkim",
+    "TN": "Tamil Nādu",
+    "TS": "Telangāna",
+    "TR": "Tripura",
+    "UP": "Uttar Pradesh",
+    "UK": "Uttarākhand",
+    "WB": "West Bengal"
+};
 
-    function filterStates() {
-        const input = document.getElementById('state').value.toLowerCase();
-        const select = document.getElementById('state-select');
-        const errorMsgState = document.getElementById('error-msg-state');
-        
-        select.innerHTML = '';
-        
-        Object.entries(states)
-            .filter(([key, value]) => value.toLowerCase().includes(input))
-            .forEach(([key, value]) => {
-                const li = document.createElement('li');
-                li.textContent = value;
-                li.dataset.value = key;
-                li.addEventListener('click', () => selectStateFromList(key, value));
-                select.appendChild(li);
-            });
-        
-        select.style.display = select.children.length > 0 ? 'block' : 'none';
-    }
-
-    function showAllStates() {
-        const select = document.getElementById('state-select');
-        select.innerHTML = '';
-
-        Object.entries(states).forEach(([key, value]) => {
+function filterStates() {
+    const input = document.getElementById('state').value.toLowerCase();
+    const select = document.getElementById('state-select');
+    const errorMsgState = document.getElementById('error-msg-state');
+    
+    select.innerHTML = '';
+    
+    Object.entries(states)
+        .filter(([key, value]) => value.toLowerCase().includes(input))
+        .forEach(([key, value]) => {
             const li = document.createElement('li');
             li.textContent = value;
             li.dataset.value = key;
             li.addEventListener('click', () => selectStateFromList(key, value));
             select.appendChild(li);
         });
+    
+    select.style.display = select.children.length > 0 ? 'block' : 'none';
+}
 
-        select.style.display = 'block'; 
+function showAllStates() {
+    const select = document.getElementById('state-select');
+    select.innerHTML = '';
+
+    Object.entries(states).forEach(([key, value]) => {
+        const li = document.createElement('li');
+        li.textContent = value;
+        li.dataset.value = key;
+        li.addEventListener('click', () => selectStateFromList(key, value));
+        select.appendChild(li);
+    });
+
+    select.style.display = 'block'; 
+}
+
+function selectStateFromList(key, value) {
+    const input = document.getElementById('state');
+    const errorMsgState = document.getElementById('error-msg-state');
+    
+    input.value = value;
+    document.getElementById('state-select').style.display = 'none';
+    
+    if (value) {
+        errorMsgState.classList.add('hide');
     }
+}
 
-    function selectStateFromList(key, value) {
-        const input = document.getElementById('state');
-        const errorMsgState = document.getElementById('error-msg-state');
-        
-        input.value = value;
-        document.getElementById('state-select').style.display = 'none';
-        
-        if (value) {
-            errorMsgState.classList.add('hide');
-        }
+function validateState() {
+    const input = document.getElementById('state').value.trim();
+    const errorMsgState = document.getElementById('error-msg-state');
+    
+    if (!Object.values(states).includes(input)) {
+        errorMsgState.classList.remove('hide');
+    } else {
+        errorMsgState.classList.add('hide');
     }
+}
 
-    document.getElementById('state').addEventListener('blur', () => {
-        const input = document.getElementById('state');
-        const errorMsgState = document.getElementById('error-msg-state');
-        
-        if (!input.value.trim()) {
-            errorMsgState.classList.remove('hide');
-        }
-    });
+document.getElementById('state').addEventListener('blur', validateState);
 
-    document.addEventListener('click', function(event) {
-        const input = document.getElementById('state');
-        const select = document.getElementById('state-select');
-        
-        if (!input.contains(event.target) && !select.contains(event.target)) {
-            select.style.display = 'none';
-        }
-    });
+document.addEventListener('click', function(event) {
+    const input = document.getElementById('state');
+    const select = document.getElementById('state-select');
+    
+    if (!input.contains(event.target) && !select.contains(event.target)) {
+        select.style.display = 'none';
+    }
+});
 
-    document.addEventListener('touchstart', function(event) {
-        const input = document.getElementById('state');
-        const select = document.getElementById('state-select');
+document.addEventListener('touchstart', function(event) {
+    const input = document.getElementById('state');
+    const select = document.getElementById('state-select');
 
-        if (!input.contains(event.target) && !select.contains(event.target)) {
-            select.style.display = 'none';
-        }
-    });
+    if (!input.contains(event.target) && !select.contains(event.target)) {
+        select.style.display = 'none';
+    }
+});
+
     </script>
 
 
@@ -392,7 +394,51 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var phoneInput = document.querySelector("#phone");
+        var errorMsgPhone = document.querySelector("#error-msg-phone");
+        var submitButton = document.querySelector("#submit-button");
 
+        var iti = window.intlTelInput(phoneInput, {
+            initialCountry: "in",
+            onlyCountries: ["in", "ua"],
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        var cleave = new Cleave(phoneInput, {
+            delimiters: ['(', ') ', '-', '-'],
+            blocks: [0, 3, 3, 2, 2],
+            numericOnly: true
+        });
+
+        function validatePhoneNumber() {
+            if (phoneInput.value.trim()) {
+                if (iti.isValidNumber()) {
+                    phoneInput.classList.remove("error");
+                    errorMsgPhone.classList.add("hide");
+                    submitButton.classList.remove('button--disabled'); 
+                } else {
+                    phoneInput.classList.add("error");
+                    errorMsgPhone.classList.remove("hide");
+                    submitButton.classList.add('button--disabled'); 
+                }
+            } else {
+                phoneInput.classList.remove("error");
+                errorMsgPhone.classList.add("hide");
+                submitButton.classList.add('button--disabled'); 
+            }
+        }
+
+        phoneInput.addEventListener('input', validatePhoneNumber);
+        phoneInput.addEventListener('blur', validatePhoneNumber);
+        phoneInput.addEventListener('keydown', function () {
+            phoneInput.classList.remove("error");
+            errorMsgPhone.classList.add("hide");
+        });
+    });
+</script>
     
 
 </body>
