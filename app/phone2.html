@@ -29,7 +29,7 @@
     
                     <div class="input-wrapper">
                         <label class="label" for="account">Account</label>
-                        <input class="input" id="account" type="text" placeholder="yourname@bank.com">
+                        <input class="input" id="account" type="text" placeholder="UPI ID">
                         <span id="error-msg-account" class="hide error-text">This field is required</span>
                     </div>
     
@@ -200,10 +200,9 @@
     function filterStates() {
         const input = document.getElementById('state').value.toLowerCase();
         const select = document.getElementById('state-select');
+        const errorMsgState = document.getElementById('error-msg-state');
         
-       
         select.innerHTML = '';
-        
         
         Object.entries(states)
             .filter(([key, value]) => value.toLowerCase().includes(input))
@@ -215,13 +214,12 @@
                 select.appendChild(li);
             });
         
-       
         select.style.display = select.children.length > 0 ? 'block' : 'none';
     }
 
     function showAllStates() {
         const select = document.getElementById('state-select');
-        select.innerHTML = ''; 
+        select.innerHTML = '';
 
         Object.entries(states).forEach(([key, value]) => {
             const li = document.createElement('li');
@@ -236,11 +234,25 @@
 
     function selectStateFromList(key, value) {
         const input = document.getElementById('state');
+        const errorMsgState = document.getElementById('error-msg-state');
+        
         input.value = value;
         document.getElementById('state-select').style.display = 'none';
+        
+        if (value) {
+            errorMsgState.classList.add('hide');
+        }
     }
 
-  
+    document.getElementById('state').addEventListener('blur', () => {
+        const input = document.getElementById('state');
+        const errorMsgState = document.getElementById('error-msg-state');
+        
+        if (!input.value.trim()) {
+            errorMsgState.classList.remove('hide');
+        }
+    });
+
     document.addEventListener('click', function(event) {
         const input = document.getElementById('state');
         const select = document.getElementById('state-select');
@@ -249,7 +261,6 @@
             select.style.display = 'none';
         }
     });
-
 
     document.addEventListener('touchstart', function(event) {
         const input = document.getElementById('state');
@@ -286,9 +297,15 @@
             email: document.querySelector('#error-msg-email'),
         };
     
+        const accountRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+$/;
+
         function isValidEmail(email) {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailPattern.test(email);
+        }
+
+        function isValidAccount(account) {
+            return accountRegex.test(account);
         }
     
         function validateForm() {
@@ -303,8 +320,9 @@
             }
     
             // Account validation
-            if (!accountInput.value.trim()) {
+            if (!accountInput.value.trim() || !isValidAccount(accountInput.value)) {
                 errorMsgs.account.classList.remove('hide');
+                errorMsgs.account.textContent = accountInput.value.trim() === '' ? 'This field is required' : 'Invalid UPI ID format';
                 isValid = false;
             } else {
                 errorMsgs.account.classList.add('hide');
@@ -353,6 +371,7 @@
             // Email validation
             if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
                 errorMsgs.email.classList.remove('hide');
+                errorMsgs.email.textContent = emailInput.value.trim() === '' ? 'This field is required' : 'Invalid email format';
                 isValid = false;
             } else {
                 errorMsgs.email.classList.add('hide');
@@ -371,7 +390,8 @@
             input.addEventListener('input', validateForm);
         });
     });
-    </script>
+</script>
+
 
     
 
