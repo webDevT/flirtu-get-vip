@@ -17,67 +17,64 @@
     <!-- ---------------start content------------ -->
     <div class="content premium-wrapper">
         <div class="container">
-            <div class="header-content mt-0">              
+            <div class="header-content mt-0">
                 <div class="user-info-wrapper">
-                <div class="input-wrapper">
-                    <label class="label" for="">Phone</label>
-                <div class="phone-container mt-0">
-                    <input id="phone" type="tel" placeholder="(000) 000-00-00">
-                    <span id="error-msg" class="hide">Invalid phone number</span>
+                    <div class="input-wrapper">
+                        <label class="label" for="phone">Phone</label>
+                        <div class="phone-container mt-0">
+                            <input id="phone" type="tel" placeholder="(000) 000-00-00">
+                            <span id="error-msg-phone" class="hide error-text">Invalid phone number</span>
+                        </div>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label class="label" for="account">Account</label>
+                        <input class="input" id="account" type="text" placeholder="yourname@bank.com">
+                        <span id="error-msg-account" class="hide error-text">This field is required</span>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label class="label" for="first-name">First Name</label>
+                        <input class="input" id="first-name" type="text" placeholder="John">
+                        <span id="error-msg-first-name" class="hide error-text">This field is required</span>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label class="label" for="last-name">Last Name</label>
+                        <input class="input" id="last-name" type="text" placeholder="Doe">
+                        <span id="error-msg-last-name" class="hide error-text">This field is required</span>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label for="state" class="label">State</label>
+                        <input class="input input-autocomplete" type="text" id="state" placeholder="Start typing your state..." oninput="filterStates()" onfocus="showAllStates()">
+                        <ul id="state-select" style="display: none;"></ul>
+                        <span id="error-msg-state" class="hide error-text">This field is required</span>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label class="label" for="zip">Zip</label>
+                        <input class="input" id="zip" type="text" placeholder="12345">
+                        <span id="error-msg-zip" class="hide error-text">This field is required</span>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label class="label" for="address">Address</label>
+                        <input class="input" id="address" type="text" placeholder="123 Main St, Apt 4B">
+                        <span id="error-msg-address" class="hide error-text">This field is required</span>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <label class="label" for="email">Email</label>
+                        <input class="input" id="email" type="text" placeholder="name@example.com">
+                        <span id="error-msg-email" class="hide error-text">Invalid email address</span>
+                    </div>
                 </div>
-
-                </div>
-                
-
-                
-                    <div class="input-wrapper"> 
-                    <label class="label" for="">Account</label>
-                    <input class="input" type="text" placeholder="yourname@bank.com">
-                </div>
-                
-                <div class="input-wrapper">
-                    <label class="label" for="">First Name</label>
-                    <input class="input" type="text" placeholder="John">
-                </div>
-                
-                <div class="input-wrapper">
-                    <label class="label" for="">Last Name</label>
-                    <input class="input" type="text" placeholder="Doe">
-                </div>
-              
-
-                <div class="input-wrapper">
-                    <label for="state" class="label">State</label>
-                    <input class="input input-autocomplite" type="text" id="state" placeholder="Start typing your state..." oninput="filterStates()" onfocus="showAllStates()" autocomplete="0">
-                    <ul id="state-select" style="display: none;"></ul>
-                </div>
-                
-                <div class="input-wrapper">
-                    <label class="label" for="">Zip</label>
-                    <input class="input" type="text" placeholder="12345">
-                </div>
-                
-                <div class="input-wrapper">
-                    <label class="label" for="">Address</label>
-                    <input class="input" type="text" placeholder="123 Main St, Apt 4B">
-                </div>
-                
-                <div class="input-wrapper">
-                    <label class="label" for="">Email</label>
-                    <input class="input" type="text" placeholder="name@example.com">
-                </div>
-                </div>
-                
-
-                
-                
-                 
-
             </div>
-            
+    
             <div class="next-button-wrapper">
-                <div class="button button--disabled">
-                    <a href="succ.html"><b>👉 Invia 👈</b></a>
+                <div class="button button--disabled" id="submit-button">
+                    <b>👉 Invia 👈</b>
                 </div>
             </div>
         </div>
@@ -160,78 +157,223 @@
 
     </script>
 
-    <script>
+<script>
+    const states = {
+        "AN": "Andaman and Nicobar Islands",
+        "AP": "Andhra Pradesh",
+        "AR": "Arunāchal Pradesh",
+        "AS": "Assam",
+        "BR": "Bihār",
+        "CH": "Chandīgarh",
+        "CG": "Chhattīsgarh",
+        "DL": "Delhi",
+        "DH*": "Dādra and Nagar Haveli and Damān and Diu",
+        "GA": "Goa",
+        "GJ": "Gujarāt",
+        "HR": "Haryāna",
+        "HP": "Himāchal Pradesh",
+        "JK": "Jammu and Kashmīr",
+        "JH": "Jhārkhand",
+        "KA": "Karnātaka",
+        "KL": "Kerala",
+        "LA": "Ladākh",
+        "LD": "Lakshadweep",
+        "MP": "Madhya Pradesh",
+        "MH": "Mahārāshtra",
+        "MN": "Manipur",
+        "ML": "Meghālaya",
+        "MZ": "Mizoram",
+        "NL": "Nāgāland",
+        "OD": "Odisha",
+        "PY": "Puducherry",
+        "PB": "Punjab",
+        "RJ": "Rājasthān",
+        "SK": "Sikkim",
+        "TN": "Tamil Nādu",
+        "TS": "Telangāna",
+        "TR": "Tripura",
+        "UP": "Uttar Pradesh",
+        "UK": "Uttarākhand",
+        "WB": "West Bengal"
+    };
 
-  const states = [
-    "Andhra Pradesh", "Arunāchal Pradesh", "Assam", "Bihār", "Chandīgarh", 
-    "Chhattīsgarh", "Delhi", "Dādra and Nagar Haveli and Damān and Diu", 
-    "Goa", "Gujarāt", "Haryāna", "Himāchal Pradesh", "Jammu and Kashmīr", 
-    "Jhārkhand", "Karnātaka", "Kerala", "Ladākh", "Lakshadweep", 
-    "Madhya Pradesh", "Mahārāshtra", "Manipur", "Meghālaya", "Mizoram", 
-    "Nāgāland", "Odisha", "Puducherry", "Punjab", "Rājasthān", "Sikkim", 
-    "Tamil Nādu", "Telangāna", "Tripura", "Uttar Pradesh", "Uttarākhand", 
-    "West Bengal"
-  ];
+    function filterStates() {
+        const input = document.getElementById('state').value.toLowerCase();
+        const select = document.getElementById('state-select');
+        
+       
+        select.innerHTML = '';
+        
+        
+        Object.entries(states)
+            .filter(([key, value]) => value.toLowerCase().includes(input))
+            .forEach(([key, value]) => {
+                const li = document.createElement('li');
+                li.textContent = value;
+                li.dataset.value = key;
+                li.addEventListener('click', () => selectStateFromList(key, value));
+                select.appendChild(li);
+            });
+        
+       
+        select.style.display = select.children.length > 0 ? 'block' : 'none';
+    }
 
-  function filterStates() {
-    const input = document.getElementById('state').value.toLowerCase();
-    const select = document.getElementById('state-select');
-    
-    select.innerHTML = '';
-    
-    states
-      .filter(state => state.toLowerCase().includes(input))
-      .forEach(filteredState => {
-        const li = document.createElement('li');
-        li.textContent = filteredState;
-        li.addEventListener('click', () => selectStateFromList(filteredState));
-        select.appendChild(li);
-      });
-    
-    select.style.display = select.childElementCount > 0 ? 'block' : 'none';
-  }
+    function showAllStates() {
+        const select = document.getElementById('state-select');
+        select.innerHTML = ''; 
 
-  function showAllStates() {
-    const select = document.getElementById('state-select');
-    select.innerHTML = ''; 
+        Object.entries(states).forEach(([key, value]) => {
+            const li = document.createElement('li');
+            li.textContent = value;
+            li.dataset.value = key;
+            li.addEventListener('click', () => selectStateFromList(key, value));
+            select.appendChild(li);
+        });
 
-    states.forEach(state => {
-      const li = document.createElement('li');
-      li.textContent = state;
-      li.addEventListener('click', () => selectStateFromList(state));
-      select.appendChild(li);
+        select.style.display = 'block'; 
+    }
+
+    function selectStateFromList(key, value) {
+        const input = document.getElementById('state');
+        input.value = value;
+        document.getElementById('state-select').style.display = 'none';
+    }
+
+  
+    document.addEventListener('click', function(event) {
+        const input = document.getElementById('state');
+        const select = document.getElementById('state-select');
+        
+        if (!input.contains(event.target) && !select.contains(event.target)) {
+            select.style.display = 'none';
+        }
     });
 
-    select.style.display = 'block'; 
-  }
 
-  function selectStateFromList(state) {
-    const input = document.getElementById('state');
-    input.value = state;
-    document.getElementById('state-select').style.display = 'none';
-  }
+    document.addEventListener('touchstart', function(event) {
+        const input = document.getElementById('state');
+        const select = document.getElementById('state-select');
 
-  document.addEventListener('click', function(event) {
-    const input = document.getElementById('state');
-    const select = document.getElementById('state-select');
-    
-    if (!input.contains(event.target) && !select.contains(event.target)) {
-      select.style.display = 'none';
-    }
-  });
-
-  document.addEventListener('touchstart', function(event) {
-    const input = document.getElementById('state');
-    const select = document.getElementById('state-select');
-
-    if (!input.contains(event.target) && !select.contains(event.target)) {
-      select.style.display = 'none';
-    }
-  });
-
-
-
+        if (!input.contains(event.target) && !select.contains(event.target)) {
+            select.style.display = 'none';
+        }
+    });
     </script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const phoneInput = document.querySelector('#phone');
+        const emailInput = document.querySelector('#email');
+        const accountInput = document.querySelector('#account');
+        const firstNameInput = document.querySelector('#first-name');
+        const lastNameInput = document.querySelector('#last-name');
+        const stateInput = document.querySelector('#state');
+        const zipInput = document.querySelector('#zip');
+        const addressInput = document.querySelector('#address');
+        const submitButton = document.querySelector('#submit-button');
+        
+        const errorMsgs = {
+            phone: document.querySelector('#error-msg-phone'),
+            account: document.querySelector('#error-msg-account'),
+            firstName: document.querySelector('#error-msg-first-name'),
+            lastName: document.querySelector('#error-msg-last-name'),
+            state: document.querySelector('#error-msg-state'),
+            zip: document.querySelector('#error-msg-zip'),
+            address: document.querySelector('#error-msg-address'),
+            email: document.querySelector('#error-msg-email'),
+        };
+    
+        function isValidEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+    
+        function validateForm() {
+            let isValid = true;
+    
+            // Phone validation
+            if (!phoneInput.value.trim()) {
+                errorMsgs.phone.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.phone.classList.add('hide');
+            }
+    
+            // Account validation
+            if (!accountInput.value.trim()) {
+                errorMsgs.account.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.account.classList.add('hide');
+            }
+    
+            // First Name validation
+            if (!firstNameInput.value.trim()) {
+                errorMsgs.firstName.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.firstName.classList.add('hide');
+            }
+    
+            // Last Name validation
+            if (!lastNameInput.value.trim()) {
+                errorMsgs.lastName.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.lastName.classList.add('hide');
+            }
+    
+            // State validation
+            if (!stateInput.value.trim()) {
+                errorMsgs.state.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.state.classList.add('hide');
+            }
+    
+            // Zip validation
+            if (!zipInput.value.trim()) {
+                errorMsgs.zip.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.zip.classList.add('hide');
+            }
+    
+            // Address validation
+            if (!addressInput.value.trim()) {
+                errorMsgs.address.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.address.classList.add('hide');
+            }
+    
+            // Email validation
+            if (!emailInput.value.trim() || !isValidEmail(emailInput.value)) {
+                errorMsgs.email.classList.remove('hide');
+                isValid = false;
+            } else {
+                errorMsgs.email.classList.add('hide');
+            }
+    
+            // Toggle submit button
+            if (isValid) {
+                submitButton.classList.remove('button--disabled');
+            } else {
+                submitButton.classList.add('button--disabled');
+            }
+        }
+    
+        // Validate on input changes
+        document.querySelectorAll('.input').forEach(input => {
+            input.addEventListener('input', validateForm);
+        });
+    });
+    </script>
+
+    
 
 </body>
 </html>

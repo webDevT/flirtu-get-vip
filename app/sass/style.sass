@@ -13,7 +13,8 @@ html
   -ms-text-size-adjust: 100%
   -ms-overflow-style: scrollbar
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
-
+button 
+  border: none
 @-ms-viewport
   width: device-width
 
@@ -265,8 +266,10 @@ a:hover
   text-align: center
   font-size: 15px
   margin-bottom: 20px
-
-.button a
+.button 
+  width: 100%
+.button a,
+.button b
   width: 100%
   background: #49c778
   color: #fff
@@ -455,9 +458,12 @@ a:hover
   background: #fff
   position: fixed
   bottom: 0
-  padding: 2px 15px
+  //padding: 2px 15px
   left: 0
   padding-bottom: 10px
+  justify-content: center
+  display: flex
+  border: none
 
 .content
   margin-bottom: 100px
@@ -594,6 +600,7 @@ a:hover
 .button--disabled
   opacity: 0.5
   pointer-events: none
+  b,
   a 
     background: grey
 .iti__selected-flag
@@ -660,6 +667,12 @@ a:hover
   background-position: right 20px center
 .mt-0 
   margin-top: 0
+.error-text
+  color: red
+  font-size: 16px
+.input-wrapper .phone-container .error-text
+  text-align: left
+  width: 100%
 @media only screen and (max-width: 590px)
   .h1 
     font-size: 7.6vw
